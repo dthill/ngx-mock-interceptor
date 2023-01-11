@@ -1,12 +1,14 @@
 {
   "name": "mock-interceptor",
   "version": "0.0.0",
+  "author": "Damien Thill",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "build": "ng build ngx-mock-interceptor",
+    "dev": "ng build --watch --configuration development ngx-mock-interceptor",
+    "test": "ng test ngx-mock-interceptor --karma-config karma.conf.js",
+    "test:ci": "npm run test -- --browsers ChromeHeadlessNoSandbox --watch=false"
   },
   "private": true,
   "dependencies": {
@@ -26,13 +28,16 @@
     "@angular-devkit/build-angular": "^15.0.5",
     "@angular/cli": "~15.0.5",
     "@angular/compiler-cli": "^15.0.0",
+    "@cypress/schematic": "^2.4.0",
     "@types/jasmine": "~4.3.0",
+    "cypress": "^12.3.0",
     "jasmine-core": "~4.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
+    "karma-summary-reporter": "^3.1.1",
     "ng-packagr": "^15.0.0",
     "typescript": "~4.8.2"
   }

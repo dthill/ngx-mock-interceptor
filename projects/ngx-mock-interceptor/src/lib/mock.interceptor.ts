@@ -7,7 +7,8 @@ import {
 } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { MockConfig, NGX_MOCK_CONFIG, RequestPath } from './config';
+import { MockConfig, RequestPath } from './config';
+import { NGX_MOCK_CONFIG } from './config-token';
 
 @Injectable()
 export class MockInterceptor implements HttpInterceptor {
@@ -17,31 +18,28 @@ export class MockInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    if (
-      !this.config ||
-      this.config.disableMocking ||
-      this.findMethodPathAndParams(request) !== undefined
-    ) {
-      return next.handle(request);
+    const matchingPath: false | undefined | RequestPath =
+      this.config?.enableMocking && this.findMethodPathAndParams(request);
+    if (!!matchingPath) {
+      request = request.clone({
+        url: matchingPath.mockPath,
+        params: new HttpParams(),
+        method: 'GET',
+      });
     }
-    const requestPath = this.findMethodPathAndParams(request);
-    request = request.clone({
-      url: requestPath?.mockPath,
-      params: new HttpParams(),
-      method: 'GET',
-    });
     return next.handle(request);
   }
 
   findMethodPathAndParams(
     request: HttpRequest<unknown>
   ): RequestPath | undefined {
-    return this.config.requestPaths?.find(
-      (requestPath) =>
+    return this.config.requestPaths?.find((requestPath) => {
+      return (
         this.matchesMethod(request, requestPath) &&
         this.matchesPath(request, requestPath) &&
         this.matchesParams(request, requestPath)
-    );
+      );
+    });
   }
 
   matchesMethod(
@@ -55,7 +53,7 @@ export class MockInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     requestPath: RequestPath
   ): boolean {
-    return request.url === requestPath.path;
+    return request.url.toLowerCase() === requestPath.path.toLowerCase();
   }
 
   matchesParams(
@@ -63,8 +61,8 @@ export class MockInterceptor implements HttpInterceptor {
     requestPath: RequestPath
   ): boolean {
     return (
-      !requestPath.httpParams ||
-      !!requestPath.httpParams
+      (!requestPath.httpParams && !request.params.keys().length) ||
+      (!!requestPath.httpParams
         ?.keys()
         .every((pathParamKey) =>
           requestPath.httpParams
@@ -74,7 +72,18 @@ export class MockInterceptor implements HttpInterceptor {
                 .getAll(pathParamKey)
                 ?.some((param) => param === pathParam)
             )
-        )
+        ) &&
+        request.params
+          ?.keys()
+          .every((paramKey) =>
+            request.params
+              .getAll(paramKey)
+              ?.every((param) =>
+                requestPath.httpParams
+                  ?.getAll(paramKey)
+                  ?.some((pathParam) => pathParam === param)
+              )
+          ))
     );
   }
 }

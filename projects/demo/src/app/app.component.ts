@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
@@ -13,7 +13,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.httpClient
-      .get('https://jsonplaceholder.typicode.com/posts/1')
+      .get('https://jsonplaceholder.typicode.com/posts/1', {
+        params: new HttpParams({ fromString: 'param1=123' }),
+      })
       .subscribe((response) => {
         this.data.next(JSON.stringify(response, null, 2));
       });

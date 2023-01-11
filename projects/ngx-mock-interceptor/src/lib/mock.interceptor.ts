@@ -7,7 +7,8 @@ import {
 } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { MockConfig, NGX_MOCK_CONFIG, RequestPath } from './config';
+import { MockConfig, RequestPath } from './config';
+import { NGX_MOCK_CONFIG } from './config-token';
 
 @Injectable()
 export class MockInterceptor implements HttpInterceptor {
@@ -17,31 +18,30 @@ export class MockInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    if (
-      !this.config ||
-      this.config.disableMocking ||
-      this.findMethodPathAndParams(request) !== undefined
-    ) {
-      return next.handle(request);
+    const matchingPath: false | undefined | RequestPath =
+      this.config &&
+      !this.config.disableMocking &&
+      this.findMethodPathAndParams(request);
+    if (!!matchingPath) {
+      request = request.clone({
+        url: matchingPath.mockPath,
+        params: new HttpParams(),
+        method: 'GET',
+      });
     }
-    const requestPath = this.findMethodPathAndParams(request);
-    request = request.clone({
-      url: requestPath?.mockPath,
-      params: new HttpParams(),
-      method: 'GET',
-    });
     return next.handle(request);
   }
 
   findMethodPathAndParams(
     request: HttpRequest<unknown>
   ): RequestPath | undefined {
-    return this.config.requestPaths?.find(
-      (requestPath) =>
+    return this.config.requestPaths?.find((requestPath) => {
+      return (
         this.matchesMethod(request, requestPath) &&
         this.matchesPath(request, requestPath) &&
         this.matchesParams(request, requestPath)
-    );
+      );
+    });
   }
 
   matchesMethod(

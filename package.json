@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development",
+    "dev": "ng build --watch --configuration development ngx-mock-interceptor",
     "test": "ng test"
   },
   "private": true,

@@ -1,9 +1,4 @@
 import { HttpParams } from '@angular/common/http';
-import { InjectionToken } from '@angular/core';
-
-export const NGX_MOCK_CONFIG = new InjectionToken<MockConfig>(
-  'ngx-mock-config'
-);
 
 export interface RequestPath {
   path: string;

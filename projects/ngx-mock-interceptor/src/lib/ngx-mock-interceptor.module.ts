@@ -7,7 +7,8 @@ import {
   Optional,
   SkipSelf,
 } from '@angular/core';
-import { MockConfig, NGX_MOCK_CONFIG } from './config';
+import { MockConfig } from './config';
+import { NGX_MOCK_CONFIG } from './config-token';
 import { MockInterceptor } from './mock.interceptor';
 
 @NgModule({

@@ -383,6 +383,137 @@ describe('MockInterceptor', () => {
         ).toBeTrue();
       });
     });
+
+    const paramsMismatchTest: TestRequest[] = [
+      {
+        request: new HttpRequest('GET', 'http://localhost', {
+          params: new HttpParams({
+            fromString: 'test0=abc',
+          }),
+        }),
+        requestPath: {
+          path: 'http://localhost',
+          method: 'GET',
+          mockPath: '/test',
+        },
+      },
+      {
+        request: new HttpRequest('GET', 'http://localhost', {
+          params: new HttpParams({
+            fromObject: { test1: 'abc' },
+          }),
+        }),
+        requestPath: {
+          path: 'http://localhost',
+          method: 'GET',
+          mockPath: '/test',
+        },
+      },
+      {
+        request: new HttpRequest('GET', 'http://localhost', {}),
+        requestPath: {
+          path: 'http://localhost',
+          method: 'GET',
+          mockPath: '/test',
+          httpParams: new HttpParams({
+            fromString: 'test3=abc',
+          }),
+        },
+      },
+      {
+        request: new HttpRequest('GET', 'http://localhost', {}),
+        requestPath: {
+          path: 'http://localhost',
+          method: 'GET',
+          mockPath: '/test',
+          httpParams: new HttpParams({
+            fromObject: { test4: '123' },
+          }),
+        },
+      },
+      {
+        request: new HttpRequest('GET', 'http://localhost', {
+          params: new HttpParams({
+            fromObject: { test5: 'abc' },
+          }),
+        }),
+        requestPath: {
+          path: 'http://localhost',
+          method: 'GET',
+          mockPath: '/test',
+          httpParams: new HttpParams({
+            fromObject: { test: 'abc' },
+          }),
+        },
+      },
+      {
+        request: new HttpRequest('GET', 'http://localhost', {
+          params: new HttpParams({
+            fromObject: { test6: 'abc' },
+          }),
+        }),
+        requestPath: {
+          path: 'http://localhost',
+          method: 'GET',
+          mockPath: '/test',
+          httpParams: new HttpParams({
+            fromObject: { test6: 'abb' },
+          }),
+        },
+      },
+      {
+        request: new HttpRequest('GET', 'http://localhost?test7=abc', {
+          params: new HttpParams({
+            fromObject: { test7: 'def' },
+          }),
+        }),
+        requestPath: {
+          path: 'http://localhost',
+          method: 'GET',
+          mockPath: '/test',
+          httpParams: new HttpParams({
+            fromString: 'test7=abc&test7=def',
+          }),
+        },
+      },
+      {
+        request: new HttpRequest('GET', 'http://localhost', {
+          params: new HttpParams({
+            fromString: 'test7=abc',
+          }),
+        }),
+        requestPath: {
+          path: 'http://localhost',
+          method: 'GET',
+          mockPath: '/test',
+          httpParams: new HttpParams({
+            fromString: 'test7=abc&test7=def',
+          }),
+        },
+      },
+      {
+        request: new HttpRequest('GET', 'http://localhost', {
+          params: new HttpParams({
+            fromString: 'test7=abc&test7=def',
+          }),
+        }),
+        requestPath: {
+          path: 'http://localhost',
+          method: 'GET',
+          mockPath: '/test',
+          httpParams: new HttpParams({
+            fromString: 'test7=def',
+          }),
+        },
+      },
+    ];
+    paramsMismatchTest.forEach((test) => {
+      it(`should not match mistmatched params ${test.request.params.toString()}`, () => {
+        expect(
+          interceptor.matchesParams(test.request, test.requestPath)
+        ).toBeFalse();
+      });
+    });
   });
 });
 

@@ -55,7 +55,7 @@ export class MockInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     requestPath: RequestPath
   ): boolean {
-    return request.url === requestPath.path;
+    return request.url.toLowerCase() === requestPath.path.toLowerCase();
   }
 
   matchesParams(
@@ -63,8 +63,8 @@ export class MockInterceptor implements HttpInterceptor {
     requestPath: RequestPath
   ): boolean {
     return (
-      !requestPath.httpParams ||
-      !!requestPath.httpParams
+      (!requestPath.httpParams && !request.params.keys().length) ||
+      (!!requestPath.httpParams
         ?.keys()
         .every((pathParamKey) =>
           requestPath.httpParams
@@ -74,7 +74,18 @@ export class MockInterceptor implements HttpInterceptor {
                 .getAll(pathParamKey)
                 ?.some((param) => param === pathParam)
             )
-        )
+        ) &&
+        request.params
+          ?.keys()
+          .every((paramKey) =>
+            request.params
+              .getAll(paramKey)
+              ?.every((param) =>
+                requestPath.httpParams
+                  ?.getAll(paramKey)
+                  ?.some((pathParam) => pathParam === param)
+              )
+          ))
     );
   }
 }

@@ -6,7 +6,7 @@ import { NGX_MOCK_CONFIG } from './config-token';
 
 import { MockInterceptor } from './mock.interceptor';
 
-describe('MockInterceptor', () => {
+describe('MockInterceptor Matcher Tests', () => {
   let interceptor: MockInterceptor;
 
   beforeEach(() => {
@@ -17,11 +17,11 @@ describe('MockInterceptor', () => {
     interceptor = TestBed.inject(MockInterceptor);
   });
 
-  describe('Method Matching Tests', () => {
-    it('should be created', () => {
-      expect(interceptor).toBeTruthy();
-    });
+  it('should be created', () => {
+    expect(interceptor).toBeTruthy();
+  });
 
+  describe('Method Matching Tests', () => {
     const methodTests: TestRequest[] = [
       {
         request: new HttpRequest('GET', 'http://localhost'),

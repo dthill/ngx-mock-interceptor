@@ -16,14 +16,14 @@ import { AppComponent } from './app.component';
       requestPaths: [
         {
           path: 'https://jsonplaceholder.typicode.com/posts/1',
-          method: 'GET',
+          method: 'POST',
           mockPath: ' /assets/test.json',
           httpParams: new HttpParams({
             fromString: 'param1=123',
           }),
         },
       ],
-      disableMocking: false,
+      enableMocking: true,
     }),
   ],
   providers: [],

@@ -17,5 +17,5 @@ export interface RequestPath {
 
 export interface MockConfig {
   requestPaths?: RequestPath[];
-  disableMocking?: boolean;
+  enableMocking?: boolean;
 }

@@ -19,9 +19,7 @@ export class MockInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
     const matchingPath: false | undefined | RequestPath =
-      this.config &&
-      !this.config.disableMocking &&
-      this.findMethodPathAndParams(request);
+      this.config?.enableMocking && this.findMethodPathAndParams(request);
     if (!!matchingPath) {
       request = request.clone({
         url: matchingPath.mockPath,

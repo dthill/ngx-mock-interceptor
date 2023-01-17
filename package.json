@@ -6,11 +6,12 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build ngx-mock-interceptor",
+    "build:ci": "npm run test:ci && npm run cypress:ci && npm run build",
     "dev": "ng build --watch --configuration development ngx-mock-interceptor",
     "test": "ng test ngx-mock-interceptor --karma-config karma.conf.js",
     "test:ci": "npm run test -- --browsers ChromeHeadlessNoSandbox --watch=false",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:ci": "cypress run --component"
   },
   "private": true,
   "dependencies": {

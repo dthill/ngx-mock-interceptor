@@ -12,17 +12,32 @@ export class AppComponent implements OnInit {
   constructor(private httpClient: HttpClient) {}
 
   ngOnInit(): void {
-    combineLatest([]);
-    this.httpClient
-      .post(
+    combineLatest([
+      this.httpClient.post(
         'https://jsonplaceholder.typicode.com/posts/1',
         { body: 'example body' },
         {
           params: new HttpParams({ fromString: 'param1=123' }),
         }
-      )
-      .subscribe((response) => {
-        this.data.next(JSON.stringify(response, null, 2));
-      });
+      ),
+      this.httpClient.put('https://jsonplaceholder.typicode.com/posts/1', {
+        body: 'example body',
+      }),
+      this.httpClient.patch(
+        'https://jsonplaceholder.typicode.com/posts/1',
+        { body: 'example body' },
+        {
+          params: new HttpParams({
+            fromString: 'param1=123&param1=456&param2=abc',
+          }),
+        }
+      ),
+      this.httpClient.get('https://jsonplaceholder.typicode.com/posts/1'),
+      this.httpClient.delete('https://jsonplaceholder.typicode.com/posts/1'),
+      this.httpClient.head('https://jsonplaceholder.typicode.com/posts/1'),
+      this.httpClient.options('https://jsonplaceholder.typicode.com/posts/1'),
+    ]).subscribe((responses) => {
+      this.data.next(JSON.stringify(responses, null, 2));
+    });
   }
 }

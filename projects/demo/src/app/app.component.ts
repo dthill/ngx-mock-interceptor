@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +12,11 @@ export class AppComponent implements OnInit {
   constructor(private httpClient: HttpClient) {}
 
   ngOnInit(): void {
+    combineLatest([]);
     this.httpClient
       .post(
         'https://jsonplaceholder.typicode.com/posts/1',
-        { body: 'test' },
+        { body: 'example body' },
         {
           params: new HttpParams({ fromString: 'param1=123' }),
         }

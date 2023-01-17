@@ -9,7 +9,8 @@
     "dev": "ng build --watch --configuration development ngx-mock-interceptor",
     "test": "ng test ngx-mock-interceptor --karma-config karma.conf.js",
     "test:ci": "npm run test -- --browsers ChromeHeadlessNoSandbox --watch=false",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "private": true,
   "dependencies": {

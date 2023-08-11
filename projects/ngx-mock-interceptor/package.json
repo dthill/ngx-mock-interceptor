@@ -1,6 +1,6 @@
 {
   "name": "ngx-mock-interceptor",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Damien Thill",
   "keywords": [
     "angular",
@@ -14,8 +14,8 @@
     "httpClient"
   ],
   "peerDependencies": {
-    "@angular/common": ">12.0.0 <16.0.0",
-    "@angular/core": ">12.0.0 <16.0.0"
+    "@angular/common": ">12.0.0 <18.0.0",
+    "@angular/core": ">12.0.0 <18.0.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"

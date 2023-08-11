@@ -1,6 +1,6 @@
 {
   "name": "mock-interceptor",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "author": "Damien Thill",
   "scripts": {
     "ng": "ng",

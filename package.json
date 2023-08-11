@@ -8,8 +8,7 @@
     "build": "ng build ngx-mock-interceptor",
     "dev": "ng build --watch --configuration development ngx-mock-interceptor",
     "test": "ng test ngx-mock-interceptor --karma-config karma.conf.js",
-    "test:ci": "npm run test -- --browsers ChromeHeadlessNoSandbox --watch=false",
-    "publish": "npm version patch && npm publish"
+    "test:ci": "npm run test -- --browsers ChromeHeadlessNoSandbox --watch=false"
   },
   "private": false,
   "dependencies": {
